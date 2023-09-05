@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
-
+subprocess.Popen("Start-Chrome-Instance.bat")
 # Set your YouTube credentials
 username = "harshabharadwaj01092004@gmail.com"
 password = "600600hb"
