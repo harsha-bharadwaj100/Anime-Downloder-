@@ -1,63 +1,40 @@
-import os
 import subprocess
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 subprocess.Popen("Start-Chrome-Instance.bat")
-# Set your YouTube credentials
-username = "harshabharadwaj01092004@gmail.com"
-password = "600600hb"
-
-# Set the YouTube video URL and the comment you want to post
-video_url = "https://www.youtube.com/watch?v=31oxj6mcsOM"
-comment_text = "Cool Video"
 
 # Initialize the WebDriver (make sure you have the appropriate driver for your browser installed)
 option = webdriver.ChromeOptions()
 option.add_experimental_option("debuggerAddress", "localhost:9222")
 
 driver = webdriver.Chrome(options=option)
-# Open YouTube
-driver.get("https://www.youtube.com/")
-
-# Find the "Sign In" button and click it
-sign_in_button = driver.find_element(By.LINK_TEXT, "Sign in")
-sign_in_button.click()
-
-# Enter the username and password in the login form
-username_field = driver.find_element(By.ID, "identifierId")
-username_field.send_keys(username)
-username_field.send_keys(Keys.RETURN)
-
-time.sleep(2)  # Wait for the page to load
-
-password_field = driver.find_element(By.NAME, "password")
-password_field.send_keys(password)
-password_field.send_keys(Keys.RETURN)
-
-time.sleep(5)  # Wait for the login to complete
-
-# Open the video URL
-driver.get(video_url)
-
-time.sleep(3)  # Wait for the video page to load
-
-# Scroll down to the comment section
-driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-time.sleep(3)  # Wait for the page to scroll
-
-# Find the comment box and enter your comment
-comment_box = driver.find_element(By.XPATH, '//*[@id="simplebox-placeholder"]')
-comment_box.send_keys(comment_text)
-
-# Find the comment submit button and click it
-comment_submit_button = driver.find_element(By.XPATH,'//*[@id="submit-button"]')
-comment_submit_button.click()
-
-time.sleep(3)  # Wait for the comment to be posted
-
+# Open Episode Page
+driver.get("https://www5.gogoanimes.fi/one-piece-episode-64")
+print("Before clicking downloadPageLink: ", driver.window_handles)
+# Get and click Download page link
+downloadPageLink = driver.find_element(By.PARTIAL_LINK_TEXT, 'Download')
+downloadPageLink.click()
+print("After clicking downloadPageLink: ", driver.window_handles)
+print("Newly opened tab: ", driver.window_handles[-1])
+# Switch to newly opened window
+print("Before switching tab title: ", driver.title)
+driver.switch_to.window(driver.window_handles[-1])
+print("After switching tab title: ", driver.title)
+WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#content-download > div:nth-child(1) > div:nth-child(5) > a')))
+print("FOUND THE ELEMENT!!!!!!!!!!!!!!!!!!!!!!!!!")
+# links = driver.find_elements(By.TAG_NAME, "a")
+# # print(links)
+# for link in links:
+#     print(link.get_attribute("href"))
+# Link opens in a new tab, click on download link
+downloadLink = driver.find_element(By.CSS_SELECTOR, '#content-download > div:nth-child(1) > div:nth-child(5) > a')
+print("Clicking the link: ", downloadLink.get_attribute("href"))
+downloadLink.click()
 # Close the browser
 driver.quit()
 
+# subprocess.Popen('close.ps1')
