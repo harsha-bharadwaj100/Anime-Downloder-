@@ -42,7 +42,7 @@ driver.get("https://www.youtube.com/")
 driver.get(video_url)
 
 time.sleep(3)  # Wait for the video page to load
-
+driver.execute_async_script
 # Scroll down to the comment section
 driver.execute_script("window.scrollTo(0, 500);")
 time.sleep(3)  # Wait for the page to scroll
