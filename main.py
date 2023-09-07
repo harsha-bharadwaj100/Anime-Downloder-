@@ -10,6 +10,7 @@ print("Supported site: https://www5.gogoanimes.fi", sep="\n")
 animeLink = input("Enter Anime Link: ").strip().replace("category/", "")
 startEpisode = int(input("From(inclusive): ").strip())
 endEpisode = int(input("To(inclusive): ").strip())
+res = int(input("Choose a resoluton:\n1. 360p\n2. 480p\n3. 720p\n4. 1080p\n").strip())
 
 subprocess.Popen("Start-Chrome-Instance.bat")
 # Initialize the WebDriver (make sure you have the appropriate driver for your browser installed)
@@ -42,14 +43,14 @@ for episodeNumber in range(startEpisode, endEpisode+1):
     driver.switch_to.window(driver.window_handles[-1])
     print("After switching tab title: ", driver.title)
     childTab = driver.current_window_handle
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#content-download > div:nth-child(1) > div:nth-child(3) > a')))
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, f'#content-download > div:nth-child(1) > div:nth-child({2+res}) > a')))
     print("FOUND THE ELEMENT!!!!!!!!!!!!!!!!!!!!!!!!!")
     # links = driver.find_elements(By.TAG_NAME, "a")
     # # print(links)
     # for link in links:
     #     print(link.get_attribute("href"))
     # Link opens in a new tab, click on download link
-    downloadLink = driver.find_element(By.CSS_SELECTOR, '#content-download > div:nth-child(1) > div:nth-child(3) > a')
+    downloadLink = driver.find_element(By.CSS_SELECTOR, f'#content-download > div:nth-child(1) > div:nth-child({2+res}) > a')
     print("Clicking the link: ", downloadLink.get_attribute("href"))
     downloadLink.click()
     WebDriverWait(driver, 2)
